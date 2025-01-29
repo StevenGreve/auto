@@ -1,4 +1,4 @@
-# Auto
+# Auto (Design Document)
 
 ## Table of Contents
 
