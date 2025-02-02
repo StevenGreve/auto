@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [API](#api)
+- [Use Cases](#use-cases)
 
 ### API
 
@@ -13,6 +14,8 @@ auto.autoKey = String;
 auto.confirmKey = String;
 auto.history = String[];
 auto.start = Function<Void>;
+auto.marker = String;
+auto.setTheme = Function<Void>;
 
 const model = [
     {
@@ -22,10 +25,10 @@ const model = [
             placeholder: String | Function<String>,
             args: Boolean,
             interactive: Boolean,
-            choices: String[] | Function<String>,
+            choices: String[] | Function<String[]>,
             autocomplete: [
                 {
-                    suggestions: String[],
+                    suggestions: String[] | Function<String[]>,
                     constraint: String | Function<String>,
                     strategy: Function<Boolean>
                 }
@@ -41,3 +44,5 @@ const model = [
     }
 ];
 ```
+
+### Use Cases
