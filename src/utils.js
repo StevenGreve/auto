@@ -1,5 +1,5 @@
 import { Writable } from "node:stream";
-import { createInterface } from "node:readline";
+import { createInterface, emitKeypressEvents } from "node:readline";
 
 export const mutableStdout = new Writable({
     write: function(chunk, encoding, callback) {
@@ -15,3 +15,13 @@ export const terminal = createInterface({
     output: mutableStdout,
     terminal: true
 });
+
+export function initTerminal() {
+    emitKeypressEvents(process.stdin);
+
+    if (process.stdin.isTTY) {
+        process.stdin.setRawMode(true);
+    }
+
+    process.stdin.resume();
+}
