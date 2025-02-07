@@ -1,3 +1,11 @@
+/* ++++++++++++++++++++++++++++++++++ DEBUG ++++++++++++++++++++++++++++++++++++ */
+import net from "net";
+
+const client = net.createConnection({host: "localhost", port: 8080}, () => {});
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* ++++++++++++++++++++++++++++++++++ GLOBALS ++++++++++++++++++++++++++++++++++ */
 import {
     mutableStdout,
     terminal,
@@ -14,8 +22,9 @@ const configs = {
     confirmKey: "return",
     marker: ">"
 }
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-// Props
+/* ++++++++++++++++++++++++++++++++++ PROPS ++++++++++++++++++++++++++++++++++++ */
 const blockedKeys = new Set(
     [
         "f1", "f2", "f3", "f4", "f5", 
@@ -27,7 +36,9 @@ const blockedKeys = new Set(
 let cPos = 0;
 let input = "";
 let pCount = 0;
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
+/* +++++++++++++++++++++++++++++++ RENDER LOGIC ++++++++++++++++++++++++++++++++ */
 function render(input) {
     process.stdout.write("\x1B[?25l");
     process.stdout.clearLine(0);
@@ -35,13 +46,17 @@ function render(input) {
     process.stdout.cursorTo(stringLength(configs.marker) + 1 + cPos);
     process.stdout.write("\x1B[?25h");
 }
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-// Use Cases
-
-// Minimalist Mode
+/* ++++++++++++++++++++++++++++++++++ MODELS +++++++++++++++++++++++++++++++++++ */
 const model = new Array(5);
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-function auto() {
+/* ++++++++++++++++++++++++++++++++ MAIN LOGIC +++++++++++++++++++++++++++++++++ */
+function displayPrompt() {
+    input = "";
+    cPos = 0;
+
     render(input);
 
     terminal.input.on("keypress", function handler(str, key) {
@@ -74,8 +89,12 @@ function auto() {
             terminal.input.removeListener("keypress", handler);
             pCount++;
 
+            const terminalWidth = String(process.stdout.columns);
+            client.write(`Terminal Width: ${terminalWidth} | Input Length: ${input.length}`);
+
             if (pCount < model.length) {
-                auto();
+                console.log("\n");
+                displayPrompt();
             } else {
                 process.exit();
             }
@@ -88,4 +107,4 @@ function auto() {
     });
 }
 
-auto();
+displayPrompt();

@@ -15,6 +15,7 @@
     "chalk-animation": "^2.0.3",
     "figures": "^6.1.0",
     "ora": "^8.1.1",
+    "string-length": "^6.0.0",
     "terminal-kit": "^3.1.2"
   }
 }
